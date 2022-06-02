@@ -48,6 +48,8 @@ app.get('/', (req, res) =>
   res.send(`${APP_NAME} API - ${NODE_ENV[0].toUpperCase() + NODE_ENV.slice(1)}`)
 );
 
+app.use(require('./src/routes/auth.route'));
+
 app.use((req, res) => {
   failed(res, {
     code: 404,
