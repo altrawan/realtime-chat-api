@@ -43,5 +43,14 @@
     "socket.io": "^4.5.1",
     "uuid": "^8.3.2",
     "xss-clean": "^0.1.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.16.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "nodemon": "^2.0.16",
+    "prettier": "^2.6.2"
   }
 }
