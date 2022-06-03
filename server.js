@@ -5,10 +5,14 @@ const helmet = require('helmet');
 const xss = require('xss-clean');
 const compression = require('compression');
 const bodyParser = require('body-parser');
+const socketio = require('socket.io');
+const { createServer } = require('http');
 const { APP_NAME, NODE_ENV, PORT } = require('./src/helpers/env');
 const { failed } = require('./src/helpers/response');
+const listenSocket = require('./src/socket');
 
 const app = express();
+const server = createServer(app);
 
 app.use(express.json());
 
@@ -41,6 +45,22 @@ app.use(bodyParser.json());
 // ejs
 app.set('views', `${__dirname}/src/views`);
 app.set('view engine', 'ejs');
+
+// socket.io
+const io = socketio(server, {
+  cors: {
+    origin: '*',
+  },
+});
+
+io.on('connection', (socket) => {
+  console.log('Client connected');
+  listenSocket(io, socket);
+  
+  socket.on('disconnect', () => {
+    console.log('Client disconnect');
+  });
+});
 
 app.use(express.static('public'));
 
