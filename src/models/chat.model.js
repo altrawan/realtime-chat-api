@@ -1,10 +1,11 @@
 const db = require('../config/pg');
 
 module.exports = {
-  detailChat: (receiver) =>
+  detailChat: (sender, receiver) =>
     new Promise((resolve, reject) => {
       db.query(
-        `SELECT * FROM chats WHERE receiver = $1 ORDER BY created_at DESC limit 1`,
+        `SELECT * FROM chats WHERE WHERE (sender = $1 AND receiver = $2) 
+        OR (sender = $2 AND receiver = $1) ORDER BY created_at DESC limit 1`,
         [sender, receiver],
         (err, res) => {
           if (err) {
@@ -45,5 +46,14 @@ module.exports = {
           resolve(res);
         }
       );
+    }),
+  deleteChat: (id) =>
+    new Promise((resolve, reject) => {
+      db.query(`DELETE FROM chats WHERE id $1`, [id], (err, res) => {
+        if (err) {
+          reject(new Error(`SQL : ${err.message}`));
+        }
+        resolve(res);
+      });
     }),
 };
