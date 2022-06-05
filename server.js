@@ -56,7 +56,7 @@ const io = socketio(server, {
 io.on('connection', (socket) => {
   console.log('Client connected');
   listenSocket(io, socket);
-  
+
   socket.on('disconnect', () => {
     console.log('Client disconnect');
   });
@@ -69,6 +69,7 @@ app.get('/', (req, res) =>
 );
 
 app.use(require('./src/routes/auth.route'));
+app.use(require('./src/routes/user.route'));
 
 app.use((req, res) => {
   failed(res, {

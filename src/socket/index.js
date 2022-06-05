@@ -15,7 +15,7 @@ module.exports = (io, socket) => {
         receiver: '',
         type: 0,
         message: '',
-        isRead: 0,
+        isRead: 1,
       };
 
       await insertChat(setData);
