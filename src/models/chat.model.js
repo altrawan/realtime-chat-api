@@ -4,9 +4,8 @@ module.exports = {
   detailChat: (sender, receiver) =>
     new Promise((resolve, reject) => {
       db.query(
-        `SELECT * FROM chats WHERE WHERE (sender = $1 AND receiver = $2) 
-        OR (sender = $2 AND receiver = $1) ORDER BY created_at DESC limit 1`,
-        [sender, receiver],
+        `SELECT * FROM chats WHERE (sender='${sender}' AND receiver='${receiver}') 
+        OR (sender='${receiver}' AND receiver='${sender}') ORDER BY created_at DESC LIMIT 1`,
         (err, res) => {
           if (err) {
             reject(new Error(`SQL : ${err.message}`));
@@ -33,8 +32,10 @@ module.exports = {
     new Promise((resolve, reject) => {
       db.query(
         `SELECT 
-        chats.id, userSender.fullname AS sender, userReceiver.fullname AS receiver, chats.message
-        FROM chats 
+        chats.id, userSender.id AS sender_id, userReceiver.id AS receiver_id,
+        userSender.name AS sender, userReceiver.name AS receiver, chats.message,
+        userSender.avatar AS sender_avatar, userReceiver.avatar AS receiver_avatar,
+        chats.created_at FROM chats 
         LEFT JOIN users AS userSender ON chats.sender = userSender.id
         LEFT JOIN users AS userReceiver ON chats.receiver = userReceiver.id
         WHERE (sender='${sender}' AND receiver='${receiver}') 

@@ -1,11 +1,13 @@
 const bcrypt = require('bcrypt');
 const { success, failed } = require('../helpers/response');
 const userModel = require('../models/user.model');
+const chatModel = require('../models/chat.model');
 const deleteFile = require('../utils/deleteFile');
 
 module.exports = {
   list: async (req, res) => {
     try {
+      const { id } = req.APP_DATA.tokenDecoded;
       let { search, limit } = req.query;
 
       search = search || '';
@@ -21,10 +23,23 @@ module.exports = {
         });
       }
 
+      const data = await Promise.all(
+        result.rows.map(async (item) => {
+          const chat = await chatModel.detailChat(item.id, id);
+
+          const obj = {
+            user: item,
+            message: chat.rows,
+          };
+
+          return obj;
+        })
+      );
+
       return success(res, {
         code: 200,
         message: `Success get all users data`,
-        data: result.rows,
+        data,
       });
     } catch (error) {
       return failed(res, {
@@ -126,7 +141,7 @@ module.exports = {
 
       return success(res, {
         code: 200,
-        message: 'Success edit profile',
+        message: 'Success edit avatar',
         data: result,
       });
     } catch (error) {
@@ -164,7 +179,7 @@ module.exports = {
 
       return success(res, {
         code: 200,
-        message: 'Success edit profile',
+        message: 'Success edit password',
         data: result,
       });
     } catch (error) {
