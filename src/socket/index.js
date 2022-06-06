@@ -6,12 +6,12 @@ module.exports = (io, socket) => {
     socket.join(data.id);
   });
   socket.on('send-message', async (data) => {
-    const { sender, receiver, message } = data;
+    const { sender, receiver, type, message } = data;
     const setData = {
       id: uuidv4(),
       sender,
       receiver,
-      type: 0,
+      type,
       message,
       isRead: 1,
     };
@@ -28,7 +28,7 @@ module.exports = (io, socket) => {
   socket.on('chat-history', async (data) => {
     const { sender, receiver } = data;
     const result = await listChat(sender, receiver);
-    io.emit('send-message-response', result.rows);
+    io.to(sender).emit('send-message-response', result.rows);
   });
   socket.on('delete-message', (data) => {
     const { id, sender, receiver } = data;
