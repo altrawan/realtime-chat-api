@@ -18,7 +18,7 @@ module.exports = (io, socket) => {
 
     insertChat(setData)
       .then(async () => {
-        const listChats = await list(sender, receiver);
+        const listChats = await listChat(sender, receiver);
         io.to(receiver).emit('send-message-response', listChats.rows);
       })
       .catch((err) => {
@@ -27,8 +27,8 @@ module.exports = (io, socket) => {
   });
   socket.on('chat-history', async (data) => {
     const { sender, receiver } = data;
-    const result = await listChat(sender, receiver);
-    io.to(sender).emit('send-message-response', result.rows);
+    const listChats = await listChat(sender, receiver);
+    io.to(sender).emit('send-message-response', listChats.rows);
   });
   socket.on('delete-message', (data) => {
     const { id, sender, receiver } = data;
