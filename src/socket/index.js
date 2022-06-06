@@ -1,5 +1,5 @@
 const { v4: uuidv4 } = require('uuid');
-const { listChat, insertChat } = require('../models/chat.model');
+const { listChat, insertChat, deleteChat } = require('../models/chat.model');
 
 module.exports = (io, socket) => {
   socket.on('join-room', (data) => {
@@ -29,5 +29,16 @@ module.exports = (io, socket) => {
     const { sender, receiver } = data;
     const result = await listChat(sender, receiver);
     io.emit('send-message-response', result.rows);
+  });
+  socket.on('delete-message', (data) => {
+    const { id, sender, receiver } = data;
+    deleteChat(id)
+      .then(async () => {
+        const result = await listChat(sender, receiver);
+        io.emit('send-message-response', result.rows);
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
   });
 };
