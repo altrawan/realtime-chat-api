@@ -14,6 +14,20 @@ module.exports = {
         }
       );
     }),
+  findBy: (field, search) =>
+    new Promise((resolve, reject) => {
+      console.log(search);
+      db.query(
+        `SELECT * FROM chats WHERE ${field} = $1`,
+        [search],
+        (err, res) => {
+          if (err) {
+            reject(new Error(`SQL : ${err.message}`));
+          }
+          resolve(res);
+        }
+      );
+    }),
   insertChat: (data) =>
     new Promise((resolve, reject) => {
       const { id, sender, receiver, type, message, isRead } = data;
@@ -50,7 +64,7 @@ module.exports = {
     }),
   deleteChat: (id) =>
     new Promise((resolve, reject) => {
-      db.query(`DELETE FROM chats WHERE id $1`, [id], (err, res) => {
+      db.query(`DELETE FROM chats WHERE id = $1`, [id], (err, res) => {
         if (err) {
           reject(new Error(`SQL : ${err.message}`));
         }
