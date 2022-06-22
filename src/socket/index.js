@@ -34,8 +34,9 @@ module.exports = (io, socket) => {
     const { id, sender, receiver } = data;
     deleteChat(id)
       .then(async () => {
-        const result = await listChat(sender, receiver);
-        io.emit('send-message-response', result.rows);
+        const listChats = await listChat(sender, receiver);
+        io.to(sender).emit('send-message-response', listChats.rows);
+        io.to(receiver).emit('send-message-response', listChats.rows);
       })
       .catch((err) => {
         console.log(err.message);
