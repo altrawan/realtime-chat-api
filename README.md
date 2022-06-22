@@ -138,9 +138,9 @@ EMAIL_FROM=
 
 ## REST API
 
-You can view my Postman collection [here](https://www.postman.com/warped-shadow-374852/workspace/blanja/overview)
+You can view my Postman collection [here](https://www.postman.com/warped-shadow-374852/workspace/realtime-chat/overview)
 </br>
-[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/19659051-cdd14dbd-b11b-492b-b4b5-83065267d690?action=collection%2Ffork&collection-url=entityId%3D19659051-cdd14dbd-b11b-492b-b4b5-83065267d690%26entityType%3Dcollection%26workspaceId%3D2d0c24df-fbb7-405f-93af-c4ef984f8428)
+[![Run in Postman](https://run.pstmn.io/button.svg)](https://app.getpostman.com/run-collection/19659051-c6105e73-8adf-43fa-ac97-915206fd49cd?action=collection%2Ffork&collection-url=entityId%3D19659051-c6105e73-8adf-43fa-ac97-915206fd49cd%26entityType%3Dcollection%26workspaceId%3D48100499-9974-4c89-8d1f-e53a8d5f8511)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -161,6 +161,8 @@ Contributions are what make the open source community such an amazing place to b
 :rocket: [`Backend Telegram Chatting`](https://github.com/altrawan/realtime-chat-api)
 
 :rocket: [`Frontend Telegram Chatting`](https://github.com/altrawan/telegram-app)
+
+:rocket: [`Web Service`](https://telegram-chatting.herokuapp.com/)
 
 :rocket: [`Demo Telegram Chatting`](https://bit.ly/telegram-chatting)
 
