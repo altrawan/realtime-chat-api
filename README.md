@@ -170,7 +170,7 @@ Contributions are what make the open source community such an amazing place to b
 
 My Email : muhammadalifputra8888@gmail.com
 
-Project Link: [https://github.com/altrawan/hire-job-api](https://github.com/altrawan/hire-job-api)
+Project Link: [https://github.com/altrawan/realtime-chat-api](https://github.com/altrawan/realtime-chat-api)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
