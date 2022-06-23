@@ -4,7 +4,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/altrawan/realtime-chat-api">
-    <img src="https://lh3.googleusercontent.com/d/1G8wgeXBTgYo9nZQkDUDXAOJRdWX49Bkg" alt="Logo" width="150px">
+    <img src="https://lh3.googleusercontent.com/d/1VmImOVcKX-U-8k8jd3Ha70u8_hMJOEiy" alt="Logo" width="150px">
   </a>
 
   <h3 align="center">Telegram Chatting : Backend Realtime Chat</h3>
