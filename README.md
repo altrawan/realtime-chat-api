@@ -21,6 +21,21 @@
     ·
     <a href="https://github.com/altrawan/realtime-chat-api/issues">Request Feature</a>
   </p>
+  
+  <p align="center">
+    <a href="https://github.com/altrawan/realtime-chat-api/issues">
+      <img src="https://img.shields.io/github/issues/altrawan/realtime-chat-api?style=flat">
+    </a>
+    <a href="https://github.com/altrawan/realtime-chat-api/network/members">
+      <img src="https://img.shields.io/github/forks/altrawan/realtime-chat-api?style=flat">
+    </a>
+    <a href="https://github.com/altrawan/realtime-chat-api/stargazers">
+      <img src="https://img.shields.io/github/stars/altrawan/realtime-chat-api?style=flat">
+    </a>
+    <a href="./LICENSE">
+      <img src="https://img.shields.io/github/license/altrawan/realtime-chat-api?style=flat">
+    </a>
+  </p>
 </div>
 
 <!-- TABLE OF CONTENTS -->
