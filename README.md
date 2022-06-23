@@ -71,6 +71,8 @@
 ## About The Project
 Create a Node.js app for building realtime chat RESTful APIs using Express.
 
+[![Bcrypt](https://img.shields.io/github/package-json/dependency-version/altrawan/realtime-chat-api/bcrypt?color=brightgreen?style=flat-square&logo=appveyor)](https://nodejs.org/)
+
 ### Built With
 This app was built with some technologies below:
 - [Node.js](https://nodejs.org/en/)
