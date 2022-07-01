@@ -6,10 +6,9 @@ const { success, failed } = require('../helpers/response');
 const authModel = require('../models/auth.model');
 const userModel = require('../models/user.model');
 const jwtToken = require('../utils/generateJwtToken');
-const { sendEmail, sendReset } = require('../utils/nodemailer');
 
 module.exports = {
-  register: async (req, res) => {
+  registeration: async (req, res) => {
     try {
       const { name, email, password } = req.body;
       const user = await userModel.findBy('email', email);
@@ -33,19 +32,6 @@ module.exports = {
         avatar: 'default.png',
         token,
       };
-
-      const template = {
-        to: email,
-        subject: 'Please Confirm Your Account',
-        text: 'Confirm Your email Telegram App Account',
-        template: 'index',
-        context: {
-          url: `${API_URL}auth/verify-email?token=${token}`,
-          name: name,
-        },
-      };
-
-      sendEmail(template);
       const result = await authModel.register(data);
 
       return success(res, {
@@ -88,7 +74,7 @@ module.exports = {
       });
     }
   },
-  login: async (req, res) => {
+  loginAccount: async (req, res) => {
     try {
       const { email, password } = req.body;
 
@@ -134,7 +120,7 @@ module.exports = {
       });
     }
   },
-  forgot: async (req, res) => {
+  forgotPassword: async (req, res) => {
     try {
       const { email } = req.body;
       const user = await userModel.findBy('email', email);
@@ -142,18 +128,6 @@ module.exports = {
       if (user.rowCount) {
         const token = crypto.randomBytes(30).toString('hex');
 
-        const templateEmail = {
-          to: email,
-          subject: 'Please Confirm Your Reset Password',
-          text: 'Confirm Your Reset Password Telegram App Account',
-          template: 'index',
-          context: {
-            url: `${API_URL}auth/reset-password?token=${token}`,
-            name: user.rows[0].name,
-          },
-        };
-
-        sendReset(templateEmail);
         const result = await authModel.updateToken(token, user.rows[0].id);
 
         return success(res, {
@@ -176,7 +150,7 @@ module.exports = {
       });
     }
   },
-  reset: async (req, res) => {
+  resetPassword: async (req, res) => {
     try {
       const { token } = req.query;
       const user = await authModel.findBy('token', token);

@@ -1,22 +1,28 @@
 const express = require('express');
+
 const { isVerified } = require('../middlewares/authorization');
-const validation = require('../validations/auth.validation');
-const validator = require('../middlewares/validator');
 const {
   register,
-  activation,
   login,
   forgot,
   reset,
+} = require('../validations/auth.validation');
+const validation = require('../middlewares/validation');
+const {
+  registeration,
+  activation,
+  loginAccount,
+  forgotPassword,
+  resetPassword,
 } = require('../controllers/auth.controller');
 
 const router = express.Router();
 
 router
-  .post('/auth/register', validation.register, validator, register)
+  .post('/auth/register', register, validation, registeration)
   .get('/auth/activation/:token', activation)
-  .post('/auth/login', isVerified, validation.login, validator, login)
-  .put('/auth/forgot', isVerified, validation.forgot, validator, forgot)
-  .put('/auth/reset', isVerified, validation.reset, validator, reset);
+  .post('/auth/login', isVerified, login, validation, loginAccount)
+  .put('/auth/forgot', isVerified, forgot, validation, forgotPassword)
+  .put('/auth/reset', isVerified, reset, validation, resetPassword);
 
 module.exports = router;
