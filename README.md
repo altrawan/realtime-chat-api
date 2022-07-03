@@ -4,7 +4,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/altrawan/realtime-chat-api">
-    <img src="https://lh3.googleusercontent.com/d/1G8wgeXBTgYo9nZQkDUDXAOJRdWX49Bkg" alt="Logo" width="150px">
+    <img src="https://lh3.googleusercontent.com/d/1VmImOVcKX-U-8k8jd3Ha70u8_hMJOEiy" alt="Logo" width="150px">
   </a>
 
   <h3 align="center">Telegram Chatting : Backend Realtime Chat</h3>
@@ -20,6 +20,21 @@
     <a href="https://github.com/altrawan/realtime-chat-api/issues">Report Bug</a>
     ·
     <a href="https://github.com/altrawan/realtime-chat-api/issues">Request Feature</a>
+  </p>
+  
+  <p align="center">
+    <a href="https://github.com/altrawan/realtime-chat-api/issues">
+      <img src="https://img.shields.io/github/issues/altrawan/realtime-chat-api?style=flat">
+    </a>
+    <a href="https://github.com/altrawan/realtime-chat-api/network/members">
+      <img src="https://img.shields.io/github/forks/altrawan/realtime-chat-api?style=flat">
+    </a>
+    <a href="https://github.com/altrawan/realtime-chat-api/stargazers">
+      <img src="https://img.shields.io/github/stars/altrawan/realtime-chat-api?style=flat">
+    </a>
+    <a href="./LICENSE">
+      <img src="https://img.shields.io/github/license/altrawan/realtime-chat-api?style=flat">
+    </a>
   </p>
 </div>
 
@@ -55,6 +70,8 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 Create a Node.js app for building realtime chat RESTful APIs using Express.
+
+[![Bcrypt](https://img.shields.io/github/package-json/dependency-version/altrawan/realtime-chat-api/bcrypt?color=brightgreen?style=flat-square&logo=appveyor)](https://nodejs.org/)
 
 ### Built With
 This app was built with some technologies below:
