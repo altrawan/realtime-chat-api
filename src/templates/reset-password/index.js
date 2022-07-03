@@ -186,11 +186,11 @@ const index = (link) => {
                                                   style="border-collapse:collapse;border-spacing:0px;">
                                                   <tbody>
                                                       <tr>
-                                                          <td style="width:250px;">
+                                                          <td style="width:150px;">
 
-                                                              <img height="auto" src="https://i.postimg.cc/wBXQNQhC/Logo.png"
+                                                              <img height="auto" src="https://i.postimg.cc/MHc0PcQq/Group-5856.png"
                                                                   style="border:0;display:block;outline:none;text-decoration:none;width:100%;"
-                                                                  width="250" />
+                                                                  width="150" />
 
                                                           </td>
                                                       </tr>
@@ -233,12 +233,12 @@ const index = (link) => {
                                               <table align="center" border="0" cellpadding="0" cellspacing="0"
                                                   role="presentation" style="border-collapse:separate;line-height:100%;">
                                                   <tr>
-                                                      <td align="center" bgcolor="#5e50a1" role="presentation"
+                                                      <td align="center" bgcolor="#7e98df" role="presentation"
                                                           style="border:none;border-radius:3px;color:#ffffff;cursor:auto;padding:15px 25px;"
                                                           valign="middle">
                                                           <a href="${link}" style="text-decoration: none;">
                                                               <p
-                                                                  style="background:#5e50a1;color:#ffffff;font-family:'Helvetica Neue',Arial,sans-serif;font-size:15px;font-weight:normal;line-height:120%;Margin:0;text-decoration:none;text-transform:none;">
+                                                                  style="background:#7e98df;color:#ffffff;font-family:'Helvetica Neue',Arial,sans-serif;font-size:15px;font-weight:normal;line-height:120%;Margin:0;text-decoration:none;text-transform:none;">
                                                                   Reset Password
                                                               </p>
                                                           </a>

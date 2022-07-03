@@ -3,11 +3,11 @@ const db = require('../config/pg');
 module.exports = {
   register: (data) =>
     new Promise((resolve, reject) => {
-      const { id, name, email, password, avatar, token } = data;
+      const { id, name, email, password, token } = data;
       db.query(
-        `INSERT INTO users (id, name, email, password, avatar, verify_token, is_verified, is_active) 
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
-        [id, name, email.toLowerCase(), password, avatar, token, 0, 0],
+        `INSERT INTO users (id, name, email, password, verify_token, is_verified, is_active) 
+        VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+        [id, name, email.toLowerCase(), password, token, 0, 0],
         (err) => {
           if (err) {
             reject(new Error(`SQL : ${err.message}`));

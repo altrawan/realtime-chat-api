@@ -1,8 +1,10 @@
 const express = require('express');
+const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const helmet = require('helmet');
 const xss = require('xss-clean');
+const compression = require('compression');
 const socketio = require('socket.io');
 const http = require('http');
 require('dotenv').config();
@@ -13,6 +15,10 @@ const listenSocket = require('./src/socket');
 
 const app = express();
 
+// morgan
+app.use(morgan('dev'));
+
+// enable cors
 app.use(cors());
 app.options('*', cors());
 
@@ -27,10 +33,17 @@ app.use(
 // sanitize request data
 app.use(xss());
 
+// compression
+app.use(compression());
+
 // parse urlencoded request body
 app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
+
+// ejs
+app.set('views', `${__dirname}/src/views`);
+app.set('view engine', 'ejs');
 
 app.use(express.static('public'));
 

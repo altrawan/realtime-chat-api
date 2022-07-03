@@ -23,6 +23,6 @@ router
   .get('/auth/activation/:token', activation)
   .post('/auth/login', isVerified, login, validation, loginAccount)
   .put('/auth/forgot', isVerified, forgot, validation, forgotPassword)
-  .put('/auth/reset', isVerified, reset, validation, resetPassword);
+  .put('/auth/reset/:token', isVerified, reset, validation, resetPassword);
 
 module.exports = router;

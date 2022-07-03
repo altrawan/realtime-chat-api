@@ -13,7 +13,7 @@ module.exports = (io, socket) => {
     try {
       const { sender, receiver } = data;
       const listChat = await chatModel.list(sender, receiver);
-      io.to(sender).emit('sender-message-response', listChat.rows);
+      io.to(sender).emit('send-message-response', listChat.rows);
     } catch (error) {
       console.log(error.message);
     }
@@ -28,7 +28,6 @@ module.exports = (io, socket) => {
         receiver,
         message,
         type: 'text',
-        isRead: false,
       });
 
       const listChat = await chatModel.list(sender, receiver);
@@ -46,7 +45,21 @@ module.exports = (io, socket) => {
 
       const listChat = await chatModel.list(sender, receiver);
 
-      io.to(sender).emit('sender-message-response', listChat.rows);
+      io.to(sender).emit('send-message-response', listChat.rows);
+      io.to(receiver).emit('send-message-response', listChat.rows);
+    } catch (error) {
+      console.log(error.message);
+    }
+  });
+  socket.on('destroy-message', async (data) => {
+    try {
+      const { sender, receiver, id } = data;
+
+      await chatModel.destroy(id);
+
+      const listChat = await chatModel.list(sender, receiver);
+
+      io.to(sender).emit('send-message-response', listChat.rows);
       io.to(receiver).emit('send-message-response', listChat.rows);
     } catch (error) {
       console.log(error.message);
@@ -54,13 +67,13 @@ module.exports = (io, socket) => {
   });
   socket.on('delete-message', async (data) => {
     try {
-      const { sender, receiver, message, id } = data;
+      const { sender, receiver, id } = data;
 
-      await chatModel.destroy(id);
+      await chatModel.delete(id);
 
       const listChat = await chatModel.list(sender, receiver);
 
-      io.to(sender).emit('sender-message-response', listChat.rows);
+      io.to(sender).emit('send-message-response', listChat.rows);
       io.to(receiver).emit('send-message-response', listChat.rows);
     } catch (error) {
       console.log(error.message);

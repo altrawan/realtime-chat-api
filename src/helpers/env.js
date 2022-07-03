@@ -16,10 +16,12 @@ module.exports = {
   // jwt
   JWT_SECRET: process.env.JWT_SECRET,
   JWT_EXPIRED: process.env.JWT_EXPIRED,
-  // email
-  HOST_STMP: process.env.HOST_STMP,
-  PORT_STMP: process.env.PORT_STMP,
-  EMAIL_AUTH_STMP: process.env.EMAIL_AUTH_STMP,
-  PASS_AUTH_STMP: process.env.PASS_AUTH_STMP,
+  // google
   EMAIL_FROM: process.env.EMAIL_FROM,
+  EMAIL_USER: process.env.EMAIL_USER,
+  GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+  REDIRECT_URI: process.env.REDIRECT_URI,
+  GMAIL_REFRESH_TOKEN: process.env.GMAIL_REFRESH_TOKEN,
+  DRIVE_REFRESH_TOKEN: process.env.DRIVE_REFRESH_TOKEN,
 };

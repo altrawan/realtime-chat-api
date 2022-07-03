@@ -2,6 +2,8 @@ const bcrypt = require('bcrypt');
 const { success, failed } = require('../helpers/response');
 const userModel = require('../models/user.model');
 const chatModel = require('../models/chat.model');
+const uploadGoogleDrive = require('../utils/uploadGoogleDrive');
+const deleteGoogleDrive = require('../utils/deleteGoogleDrive');
 const deleteFile = require('../utils/deleteFile');
 
 module.exports = {
@@ -25,7 +27,7 @@ module.exports = {
 
       const data = await Promise.all(
         result.rows.map(async (item) => {
-          const chat = await chatModel.detailChat(item.id, id);
+          const chat = await chatModel.detail(item.id, id);
 
           const obj = {
             user: item,
@@ -115,7 +117,7 @@ module.exports = {
 
       if (!user.rowCount) {
         if (req.file) {
-          deleteFile(`public/uploads/users/${req.file.filename}`);
+          deleteFile(req.file.path);
         }
         return failed(res, {
           code: 404,
@@ -124,12 +126,18 @@ module.exports = {
         });
       }
 
+      // upload image to google drive
       let { avatar } = user.rows[0];
       if (req.file) {
-        if (avatar !== 'default.png') {
-          deleteFile(`public/uploads/users/${avatar}`);
+        if (avatar) {
+          // remove old image except default image
+          deleteGoogleDrive(avatar);
         }
-        avatar = req.file.filename;
+        // upload new image to google drive
+        const photoGd = await uploadGoogleDrive(req.file);
+        avatar = photoGd.id;
+        // remove image after upload
+        deleteFile(req.file.path);
       }
 
       const data = {
@@ -146,7 +154,7 @@ module.exports = {
       });
     } catch (error) {
       if (req.file) {
-        deleteFile(`public/uploads/users/${req.file.filename}`);
+        deleteFile(req.file.path);
       }
       return failed(res, {
         code: 500,

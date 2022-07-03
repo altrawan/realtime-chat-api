@@ -1,11 +1,14 @@
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const { v4: uuidv4 } = require('uuid');
-const { API_URL, APP_CLIENT } = require('../helpers/env');
+const { APP_NAME, EMAIL_FROM, API_URL, APP_CLIENT } = require('../helpers/env');
 const { success, failed } = require('../helpers/response');
 const authModel = require('../models/auth.model');
 const userModel = require('../models/user.model');
 const jwtToken = require('../utils/generateJwtToken');
+const sendEmail = require('../utils/sendEmail');
+const activateAccount = require('../templates/confirm-email');
+const resetAccount = require('../templates/reset-password');
 
 module.exports = {
   registeration: async (req, res) => {
@@ -29,9 +32,17 @@ module.exports = {
         name,
         email,
         password: hashPassword,
-        avatar: 'default.png',
         token,
       };
+
+      const templateEmail = {
+        from: `"${APP_NAME}" <${EMAIL_FROM}>`,
+        to: email.toLowerCase(),
+        subject: 'Activate Your Account!',
+        html: activateAccount(`${API_URL}auth/activation/${token}`, name),
+      };
+      sendEmail(templateEmail);
+
       const result = await authModel.register(data);
 
       return success(res, {
@@ -49,23 +60,31 @@ module.exports = {
   },
   activation: async (req, res) => {
     try {
-      const { token } = req.query;
-      const user = await userModel.findBy('token', token);
+      const { token } = req.params;
+      const user = await userModel.findBy('verify_token', token);
 
-      if (!user.rowCount) {
-        return failed(res, {
-          code: 400,
-          message: 'Activation failed',
-          error: 'Bad Request',
+      if (user.rowCount) {
+        if (!user.rowCount) {
+          return failed(res, {
+            code: 400,
+            message: 'Activation failed',
+            error: 'Bad Request',
+          });
+        }
+
+        await authModel.userActivation(token);
+        res.render('./welcome.ejs', {
+          name: user.rows[0].name,
+          url_home: `${APP_CLIENT}`,
+          url_login: `${APP_CLIENT}login`,
+        });
+      } else {
+        failed(res, {
+          code: 404,
+          message: 'Token not found',
+          error: 'Not Found',
         });
       }
-
-      await authModel.userActivation(token);
-      res.render('./welcome.ejs', {
-        name: user.rows[0].name,
-        url_home: `${APP_CLIENT}`,
-        url_login: `${APP_CLIENT}/auth/login`,
-      });
     } catch (error) {
       return failed(res, {
         code: 500,
@@ -126,9 +145,21 @@ module.exports = {
       const user = await userModel.findBy('email', email);
 
       if (user.rowCount) {
-        const token = crypto.randomBytes(30).toString('hex');
+        const verifyToken = crypto.randomBytes(30).toString('hex');
 
-        const result = await authModel.updateToken(token, user.rows[0].id);
+        // send email for reset password
+        const templateEmail = {
+          from: `"${APP_NAME}" <${EMAIL_FROM}>`,
+          to: email.toLowerCase(),
+          subject: 'Reset Your Password!',
+          html: resetAccount(`${APP_CLIENT}reset/${verifyToken}`),
+        };
+        sendEmail(templateEmail);
+
+        const result = await authModel.updateToken(
+          verifyToken,
+          user.rows[0].id
+        );
 
         return success(res, {
           code: 200,
@@ -152,8 +183,8 @@ module.exports = {
   },
   resetPassword: async (req, res) => {
     try {
-      const { token } = req.query;
-      const user = await authModel.findBy('token', token);
+      const { token } = req.params;
+      const user = await userModel.findBy('verify_token', token);
 
       if (!user.rowCount) {
         return failed(res, {

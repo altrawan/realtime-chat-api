@@ -1,7 +1,27 @@
 const db = require('../config/pg');
 
 module.exports = {
-  detailChat: (sender, receiver) =>
+  list: (sender, receiver) =>
+    new Promise((resolve, reject) => {
+      db.query(
+        `SELECT 
+        chats.id, chats.message, chats.created_at, chats.is_deleted,
+        userSender.id AS sender_id, userReceiver.id AS receiver_id, 
+        userSender.name AS sender, userSender.avatar AS avatar
+        FROM chats 
+        LEFT JOIN users AS userSender ON chats.sender = userSender.id
+        LEFT JOIN users AS userReceiver ON chats.receiver = userReceiver.id
+        WHERE (sender='${sender}' AND receiver='${receiver}') 
+        OR (sender='${receiver}' AND receiver='${sender}') ORDER BY chats.created_at ASC`,
+        (err, res) => {
+          if (err) {
+            reject(new Error(`SQL : ${err.message}`));
+          }
+          resolve(res);
+        }
+      );
+    }),
+  detail: (sender, receiver) =>
     new Promise((resolve, reject) => {
       db.query(
         `SELECT * FROM chats WHERE (sender='${sender}' AND receiver='${receiver}') 
@@ -28,12 +48,13 @@ module.exports = {
         }
       );
     }),
-  insertChat: (data) =>
+  store: (data) =>
     new Promise((resolve, reject) => {
-      const { id, sender, receiver, type, message, isRead } = data;
+      const { id, sender, receiver, message, type } = data;
       db.query(
-        `INSERT INTO chats VALUES ($1, $2, $3, $4, $5, $6)`,
-        [id, sender, receiver, type, message, isRead],
+        `INSERT INTO chats (id, sender, receiver, message, type, is_read, is_deleted) 
+        VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+        [id, sender, receiver, message, type, false, false],
         (err) => {
           if (err) {
             reject(new Error(`SQL : ${err.message}`));
@@ -42,18 +63,27 @@ module.exports = {
         }
       );
     }),
-  listChat: (sender, receiver) =>
+  update: (message, id) =>
     new Promise((resolve, reject) => {
       db.query(
-        `SELECT 
-        chats.id, userSender.id AS sender_id, userReceiver.id AS receiver_id,
-        userSender.name AS sender, userReceiver.name AS receiver, chats.message,
-        userSender.avatar AS sender_avatar, userReceiver.avatar AS receiver_avatar,
-        chats.created_at FROM chats 
-        LEFT JOIN users AS userSender ON chats.sender = userSender.id
-        LEFT JOIN users AS userReceiver ON chats.receiver = userReceiver.id
-        WHERE (sender='${sender}' AND receiver='${receiver}') 
-        OR (sender='${receiver}' AND receiver='${sender}')`,
+        `UPDATE chats SET message=$1 WHERE id=$2`,
+        [message, id],
+        (err) => {
+          if (err) {
+            reject(new Error(`SQL : ${err.message}`));
+          }
+          resolve({
+            id,
+            message,
+          });
+        }
+      );
+    }),
+  destroy: (id) =>
+    new Promise((resolve, reject) => {
+      db.query(
+        `UPDATE chats SET is_deleted = true WHERE id = $1`,
+        [id],
         (err, res) => {
           if (err) {
             reject(new Error(`SQL : ${err.message}`));
@@ -62,7 +92,7 @@ module.exports = {
         }
       );
     }),
-  deleteChat: (id) =>
+  delete: (id) =>
     new Promise((resolve, reject) => {
       db.query(`DELETE FROM chats WHERE id = $1`, [id], (err, res) => {
         if (err) {
